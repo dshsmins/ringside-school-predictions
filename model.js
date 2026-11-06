@@ -1,0 +1,14 @@
+export const initial = { id: 'main-335', title: 'UFC 335 · 메인매치', a: '전재신', b: '오승민', time: '2026-11-06T12:35:00+09:00', place: '인수실', rules: '킥복싱', poster: '/poster.svg', photoA: '', photoB: '', video: '', closed: false, result: '', timer: { round: 1, remaining: 70, started: null } };
+export function seconds(timer, now = Date.now()) { return Math.max(0, timer.remaining - (timer.started === null ? 0 : Math.floor((now - timer.started) / 1000))); }
+export function moveTimer(timer, action, now = Date.now()) { if (action === 'start' && timer.started !== null)
+    return { ...timer }; const t = { ...timer }; t.remaining = seconds(t, now); if (action === 'start' && t.remaining > 0 && t.started === null)
+    t.started = now; if (action === 'pause')
+    t.started = null; if (action === 'next' && t.remaining === 0 && t.round < 3) {
+    t.round++;
+    t.remaining = 70;
+    t.started = null;
+} if (action === 'reset') {
+    t.round = 1;
+    t.remaining = 70;
+    t.started = null;
+} return t; }
