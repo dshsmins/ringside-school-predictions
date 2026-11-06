@@ -1,0 +1,22 @@
+{
+  "name": "ringside-school-predictions",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-06",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
+    "not_found_handling": "single-page-application"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ringside-data",
+      "database_id": "a7bea73a-0bb4-4cdf-ade6-29c82b192b3c"
+    }
+  ],
+  "kv_namespaces": [
+    { "binding": "MEDIA", "id": "dbaf2fe9e7ac4f779b6511d8e406390b" }
+  ],
+  "observability": { "enabled": true }
+}
