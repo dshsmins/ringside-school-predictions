@@ -5,8 +5,8 @@ const b64 = b => btoa(String.fromCharCode(...new Uint8Array(b)));
 const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 const hex = b => [...new Uint8Array(b)].map(x => x.toString(16).padStart(2,'0')).join('');
 const sha = async s => hex(await crypto.subtle.digest('SHA-256', enc.encode(s)));
-async function passwordHash(p) { const salt = crypto.getRandomValues(new Uint8Array(16)); const k = await crypto.subtle.importKey('raw', enc.encode(p), 'PBKDF2', false, ['deriveBits']); const v = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: 210000 }, k, 256); return `pbkdf2:${b64(salt)}:${b64(v)}`; }
-async function passwordOk(p, h) { try { const [,s,v] = h.split(':'); const k = await crypto.subtle.importKey('raw', enc.encode(p), 'PBKDF2', false, ['deriveBits']); const got = new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: unb64(s), iterations: 210000 }, k, 256)); const want = unb64(v); return got.length === want.length && got.every((x,i)=>x===want[i]); } catch { return false; } }
+async function passwordHash(p) { const salt = crypto.getRandomValues(new Uint8Array(16)); const k = await crypto.subtle.importKey('raw', enc.encode(p), 'PBKDF2', false, ['deriveBits']); const v = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations: 100000 }, k, 256); return `pbkdf2:${b64(salt)}:${b64(v)}`; }
+async function passwordOk(p, h) { try { const [,s,v] = h.split(':'); const k = await crypto.subtle.importKey('raw', enc.encode(p), 'PBKDF2', false, ['deriveBits']); const got = new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: unb64(s), iterations: 100000 }, k, 256)); const want = unb64(v); return got.length === want.length && got.every((x,i)=>x===want[i]); } catch { return false; } }
 const seed = { id:'main-335', title:'UFC 335 · 메인매치', a:'전재신', b:'오승민', time:'2026-11-06T12:35:00+09:00', place:'인수실', rules:'킥복싱', poster:'/poster.svg', photoA:'', photoB:'', video:'', closed:false, result:'', timer:{round:1,remaining:70,started:null} };
 let ready = false;
 async function initialize(env) {
